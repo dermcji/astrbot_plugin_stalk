@@ -160,3 +160,9 @@
 - 只认群消息。想看"进群"事件得等 AstrBot 那边支持群成员变动钩子。
 - 同一个 QQ 在不同群里独立计时（记的是「群号:QQ号」）。
 - 数据存在 `data/plugin_data/astrbot_plugin_stalk/stalk.json`，只留最近一周的发言时间。
+
+## 版本记录
+
+逐条变更见 [CHANGELOG.md](CHANGELOG.md)。
+
+- **1.0.0**：首个版本：久别重逢才动手、四种动作、记录落盘、`/视奸` 与 `/戳一下` 自检。
