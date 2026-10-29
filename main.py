@@ -35,7 +35,7 @@ except ImportError:  # 老版本没有 At，退化成分纯文本
     At = None  # type: ignore
 
 PLUGIN_NAME = "astrbot_plugin_stalk"
-PLUGIN_VER = "1.0.0"
+PLUGIN_VER = "1.0.1"
 _DEFAULT_DATA = Path(__file__).parent / "data"
 _STALK_FILE = "stalk.json"
 # 发言时间最多留一周，再久的也没参考价值了
@@ -256,7 +256,11 @@ class StalkPeek(Star):
     def _save(self) -> None:
         cutoff = time.time() - TS_KEEP
         self._last = {k: v for k, v in self._last.items() if float(v) >= cutoff}
-        _save_json(_STALK_FILE, {"targets": list(self._extra), "last": self._last})
+        try:
+            _save_json(_STALK_FILE, {"targets": list(self._extra), "last": self._last})
+        except OSError as e:
+            # 写不进去也不能把消息处理带崩，内存里的时间戳还够用
+            logger.warning(f"[stalk] 状态没写进磁盘: {e}")
 
     # ------------------------------------------------------------------ 动作
 
@@ -368,13 +372,13 @@ class StalkPeek(Star):
         self._last[key] = now
         self._save()
         if last is None:
-            logger.info(
-                f"[stalk] 开始记 {key}，等他隔 {self.gap / 60:.0f} 分钟再说才动手"
-            )
-            return
-        gap = now - float(last)
-        if gap < self.gap:
-            return
+            # 没有历史记录：不知道他到底隔了多久，按「刚重逢」处理。
+            # 否则新加的人要冒两次泡才有反应，看起来像插件没生效。
+            gap = float(self.gap)
+        else:
+            gap = now - float(last)
+            if gap < self.gap:
+                return
         name = str(event.get_sender_name() or sender)
         act = self.action
         logger.info(f"[stalk] 触发 {key}，隔了 {gap / 60:.0f} 分钟，动作={act}")
@@ -418,7 +422,7 @@ class StalkPeek(Star):
         for qq in targets:
             mine = [(k, v) for k, v in self._last.items() if k.endswith(f":{qq}")]
             if not mine:
-                lines.append(f"· {qq}：还没记录，等他下次说话开始计时")
+                lines.append(f"· {qq}：还没记录，他下次冒泡就动手")
                 continue
             for k, v in sorted(mine, key=lambda kv: kv[1], reverse=True)[:2]:
                 gid = k.split(":", 1)[0]

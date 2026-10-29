@@ -1,6 +1,6 @@
 name: astrbot_plugin_stalk
 display_name: 群友视奸
 desc: 盯住指定的群友，他隔一阵子第一次冒泡时，@ 他说句话、连戳他几下，或者先说再戳。只在群里生效，时间戳落盘，重装重启都不会突然刷屏。
-version: 1.0.0
+version: 1.0.1
 author: dsh
 repo: https://github.com/dermcji/astrbot_plugin_stalk
