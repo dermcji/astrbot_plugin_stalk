@@ -1,0 +1,62 @@
+{
+  "stalk_enabled": {
+    "type": "bool",
+    "description": "开启「视奸」",
+    "hint": "开着但没盯任何人时不会做任何事，所以默认开启——用 /视奸 加 <QQ号> 加人之后立刻生效。彻底关掉就改成 false。",
+    "default": true
+  },
+  "stalk_qq": {
+    "type": "list",
+    "description": "盯着哪些人（QQ 号）",
+    "hint": "每行一个 QQ 号。也可以在 QQ 里直接发 /视奸 加 <QQ号>，那样存下来的不会被面板覆盖。",
+    "default": []
+  },
+  "stalk_gap_minutes": {
+    "type": "int",
+    "description": "多久没说话才算「重新出现」（分钟）",
+    "hint": "他在群里说话时，如果距离他上一次发言超过这个时长，才算「隔一阵子第一次出现」，这时才动手。默认 120 分钟。",
+    "default": 120
+  },
+  "stalk_action": {
+    "type": "string",
+    "description": "动手做什么",
+    "hint": "poke=连戳他几下；at=@ 他说一句话；both=先说一句再连戳；say=不 @ 只发一句话。",
+    "default": "poke"
+  },
+  "stalk_poke_times": {
+    "type": "int",
+    "description": "连戳几下",
+    "hint": "只在动作是 poke 或 both 时有用。建议 1~5，太多会被 QQ 限流。",
+    "default": 3
+  },
+  "stalk_poke_interval": {
+    "type": "float",
+    "description": "两下之间隔几秒",
+    "hint": "太密集容易被风控拦，0.5~1.5 比较稳。",
+    "default": 0.8
+  },
+  "stalk_lines": {
+    "type": "list",
+    "description": "动手时说的话（可选）",
+    "hint": "每行一句，随机挑一句发。里面可以写 {name}，会换成对方的群名片。留空就让机器人用人格设定现编一句。",
+    "default": []
+  },
+  "stalk_groups": {
+    "type": "list",
+    "description": "只在哪些群生效",
+    "hint": "填群号，留空表示所有群都生效。",
+    "default": []
+  },
+  "allowed_qq": {
+    "type": "list",
+    "description": "谁能使唤这个插件（QQ 号）",
+    "hint": "留空表示谁都能用 /视奸 加 减 清。填了就只认这些人。",
+    "default": []
+  },
+  "allowed_groups": {
+    "type": "list",
+    "description": "只在哪些群能用指令",
+    "hint": "留空表示不限制。和上面的「只在哪些群生效」不是一回事，那个管动作，这个管指令。",
+    "default": []
+  }
+}
